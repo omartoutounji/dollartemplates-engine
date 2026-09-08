@@ -6,7 +6,7 @@ def _line(x1,y1,x2,y2,opacity=1,width=1.35):
     return f'<line x1="{x1}" y1="{y1}" x2="{x2}" y2="{y2}" stroke="#111" stroke-width="{width}" opacity="{opacity}"/>'
 
 def _text(x,y,value,size,weight=500,spacing=0,anchor="start"):
-    return f'<text x="{x}" y="{y}" fill="#111" font-family="Arial, Helvetica, sans-serif" font-size="{size}" font-weight="{weight}" letter-spacing="{spacing}" text-anchor="{anchor}">{escape(str(value))}</text>'
+    return f'<text x="{x}" y="{y}" fill="#111" font-family="DejaVu Sans" font-size="{size}" font-weight="{weight}" letter-spacing="{spacing}" text-anchor="{anchor}">{escape(str(value))}</text>'
 
 def render_svg(template, device, t=TOKENS):
     left=device.safe_area.left+t.page_padding; right=device.width-device.safe_area.right-t.page_padding
