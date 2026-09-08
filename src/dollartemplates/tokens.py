@@ -12,5 +12,6 @@ class DesignTokens:
     line_spacing: int = 38
     checkbox_size: int = 17
     sizes: dict[str, int] = field(default_factory=lambda: {"small": 3, "medium": 5, "large": 8})
+    label_sizes: dict[str, int] = field(default_factory=lambda: {"small": 11, "medium": 13, "large": 16, "xlarge": 20, "xxlarge": 24})
 
 TOKENS = DesignTokens()

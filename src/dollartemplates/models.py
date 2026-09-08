@@ -2,7 +2,7 @@ from __future__ import annotations
 from typing import Literal, Union
 from pydantic import BaseModel, Field, model_validator
 
-Size = Literal["small", "medium", "large"]
+Size = Literal["small", "medium", "large", "xlarge", "xxlarge"]
 
 class SafeArea(BaseModel):
     top: int = Field(ge=0)
@@ -29,6 +29,7 @@ class Device(BaseModel):
     display: Display
     safe_area: SafeArea
     capabilities: Capabilities = Capabilities()
+    layout_overrides: dict[str, object] = Field(default_factory=dict)
     @property
     def width(self): return self.display.width
     @property
@@ -65,17 +66,42 @@ class ActionItemsSection(BaseModel):
 
 Section = Union[FieldRowSection, ChecklistSection, WritingAreaSection, ActionItemsSection]
 
+class WritingStyle(BaseModel):
+    kind: Literal["blank", "ruled", "grid", "dots", "checkbox", "table", "timeline", "bulleted", "numbered"] = "ruled"
+    lines: int | None = Field(default=None, ge=1)
+    rows: int | None = Field(default=None, ge=1)
+    columns: list[str] = Field(default_factory=list)
+
+class Region(BaseModel):
+    id: str
+    role: Literal["metadata", "section", "reference", "writing", "checklist", "table", "sidebar", "footer", "header"] = "writing"
+    title: str = ""
+    style: WritingStyle = WritingStyle()
+
+class Page(BaseModel):
+    layout: Literal["canvas", "stack", "split", "quadrants", "sidebar", "table", "planner", "timeline", "flow"] = "stack"
+    regions: list[Region] = Field(default_factory=list)
+
 class Template(BaseModel):
     id: str
     title: str
     purpose: str = ""
     supported_devices: list[str]
-    sections: list[Section]
+    sections: list[Section] = Field(default_factory=list)
+    page: Page | None = None
+    show_page_title: bool = False
+    layout: Literal["default", "quadrant"] = "default"
     @model_validator(mode="after")
     def structural_rules(self):
         ids = [s.id for s in self.sections]
         if len(ids) != len(set(ids)):
             raise ValueError("Section IDs must be unique.")
+        if self.page:
+            page_ids = [r.id for r in self.page.regions]
+            if len(page_ids) != len(set(page_ids)):
+                raise ValueError("Page region IDs must be unique.")
+        if not self.page and not self.sections:
+            raise ValueError("Template must define either sections or a page.")
         return self
 
 class Bounds(BaseModel):

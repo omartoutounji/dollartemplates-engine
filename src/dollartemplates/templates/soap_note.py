@@ -5,12 +5,12 @@ soap_note = Template(
     id="soap-note", title="SOAP NOTE",
     purpose="Capture a concise Subjective, Objective, Assessment, and Plan note with generous handwriting space.",
     supported_devices=["paper-pro-move", "remarkable-2"],
+    layout="quadrant",
     sections=[
-        FieldRow(["Client", "Date"], id="client-date", label="SESSION"),
-        FieldRow(["Provider", "Session"], id="provider-session", label="DETAILS"),
-        WritingArea("Subjective", size="large", lines=5),
-        WritingArea("Objective", size="medium", lines=4),
-        WritingArea("Assessment", size="medium", lines=4),
-        WritingArea("Plan", size="large", lines=6, expandable=True),
+        FieldRow(["Date"], id="date", label="DATE"),
+        WritingArea("Subjective", size="xxlarge", lines=10),
+        WritingArea("Objective", size="xxlarge", lines=10),
+        WritingArea("Assessment", size="xxlarge", lines=10),
+        WritingArea("Plan", size="xxlarge", lines=10),
     ],
 )

@@ -43,6 +43,23 @@ Deploy everywhere.
 
 ---
 
+## Paper Composition Architecture
+
+The framework has been refactored toward a paper-first model.
+
+Instead of organizing the engine around business widgets like `WritingArea`, `Checklist`, and `ActionItems`, the architecture now centers on:
+
+- `Page` — how the sheet is composed
+- `Region` — what meaningful area of paper exists
+- `WritingStyle` — how each region behaves as paper
+- `Template` — the higher-level semantic intention
+
+This means the engine now models paper grammar directly, while preserving the legacy `sections` API for compatibility.
+
+A new design analysis document is available in [docs/paper-composition-architecture.md](docs/paper-composition-architecture.md).
+
+---
+
 # Architecture
 
 ```
