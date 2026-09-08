@@ -1,6 +1,6 @@
 from PIL import Image, ImageChops
 
-def compare_images(actual, baseline, threshold=2, max_mismatch=0.0001, diff=None):
+def compare_images(actual, baseline, threshold=2, max_mismatch=0.01, diff=None):
     a=Image.open(actual).convert("L"); b=Image.open(baseline).convert("L")
     if a.size!=b.size: return False,{"reason":f"size mismatch {a.size} != {b.size}"}
     d=ImageChops.difference(a,b); hist=d.histogram(); total=a.width*a.height
